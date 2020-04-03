@@ -1,8 +1,11 @@
 from flask import Blueprint, request, current_app, jsonify
+from google.protobuf.json_format import MessageToJson
 
-from ._query import parse_query
 from nwpc_gdata.field import load_field_bytes
 from nwpc_gdata.index_retrieval import IndexRetrieval
+from nwpc_gdata.transport import RawField
+
+from ._query import parse_query
 
 api_app = Blueprint('api_app', __name__, template_folder='template')
 
@@ -21,7 +24,6 @@ def fetch_field():
     }
 
     """
-
     request_body = request.json
     query = request_body["query"]
     query = parse_query(query)
@@ -35,8 +37,10 @@ def fetch_field():
         **query,
     )
 
-    print(raw_bytes)
+    raw_field = RawField()
+    raw_field.raw_bytes = raw_bytes
+
     return jsonify({
         "status": "complete",
-        "raw_bytes": raw_bytes.decode("base64"),
+        "raw_field": MessageToJson(raw_field),
     })

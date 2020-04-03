@@ -49,7 +49,8 @@ setup(
         "click",
         "flask",
         "elasticsearch",
-        "attrs"
+        "attrs",
+        "protobuf",
     ],
 
     extras_require={
