@@ -1,9 +1,8 @@
 from flask import Blueprint, request, current_app, jsonify
-from google.protobuf.json_format import MessageToJson
 
 from nwpc_gdata.field import load_field_bytes
 from nwpc_gdata.index_retrieval import IndexRetrieval
-from nwpc_gdata.transport import RawField
+from nwpc_gdata.transport import RawField, convert_to_json
 
 from ._query import parse_query
 
@@ -37,10 +36,15 @@ def fetch_field():
         **query,
     )
 
+    if raw_bytes is None:
+        return jsonify({
+            "status": "failed",
+        })
+
     raw_field = RawField()
     raw_field.raw_bytes = raw_bytes
 
     return jsonify({
         "status": "complete",
-        "raw_field": MessageToJson(raw_field),
+        "raw_field": convert_to_json(raw_field),
     })
