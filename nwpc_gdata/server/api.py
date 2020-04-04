@@ -25,7 +25,7 @@ def fetch_field():
     """
     request_body = request.json
     query = request_body["query"]
-    query = parse_query(query)
+    fixed_query = parse_query(query)
 
     servers = current_app.config["SERVER_CONFIG"]["elasticsearch"]["hosts"]
     servers = servers.split(",")
@@ -33,7 +33,7 @@ def fetch_field():
 
     raw_bytes = load_field_bytes(
         index_retrieval=retrieval,
-        **query,
+        **fixed_query,
     )
 
     if raw_bytes is None:
