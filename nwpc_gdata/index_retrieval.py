@@ -44,7 +44,7 @@ class IndexRetrieval(object):
         print(query_body)
 
         result = self._get_result(
-            index="grb_index",
+            index="eccode_gfs_grb_index",
             query_body=query_body,
             search_from=0,
             search_size=1,
@@ -90,9 +90,10 @@ class IndexRetrieval(object):
         if not (system == "grapes_gfs_gmf" and stream == "oper" and data_type == "grib2" and data_name == "orig"):
             raise ValueError("query params is not supported")
 
-        must_conditions = [{
-            "match": {"DataName": "GFSGMFGRIB2"}
-        }]
+        must_conditions = []
+        # must_conditions = [{
+        #     "match": {"DataName": "GFSGMFGRIB2"}
+        # }]
 
         filter_conditions=[{
             "term": {"date": int(start_time.strftime("%Y%m%d"))}
