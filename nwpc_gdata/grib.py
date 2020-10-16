@@ -1,3 +1,5 @@
+import typing
+
 import attr
 import eccodes
 
@@ -9,7 +11,7 @@ class GribMessageIndex(object):
     file_path = attr.ib()
 
 
-def load_bytes_from_index(index: GribMessageIndex) -> bytes or None:
+def load_bytes_from_index(index: GribMessageIndex) -> typing.Optional[bytes]:
     with open(index.file_path, "rb") as f:
         f.seek(index.offset)
         message = eccodes.codes_grib_new_from_file(f)

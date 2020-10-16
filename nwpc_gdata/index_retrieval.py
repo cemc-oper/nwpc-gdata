@@ -22,13 +22,13 @@ class IndexRetrieval(object):
             stream: str,
             data_type: str,
             data_name: str,
-            start_time: datetime.datetime or pd.Timestamp,
+            start_time: typing.Union[datetime.datetime, pd.Timestamp],
             forecast_time: pd.Timedelta,
             parameter: str,
             level_type: str = None,
             level: int = None,
             data_class: str = "od",
-    ):
+    ) -> typing.Optional[GribMessageIndex]:
         query_body = self._get_query_body(
             system,
             stream,
@@ -65,7 +65,7 @@ class IndexRetrieval(object):
             query_body: dict,
             search_from: int = 0,
             search_size: int = 1
-    ):
+    ) -> typing.Dict:
         search_body = {
             "size": search_size,
             "from": search_from,
@@ -85,7 +85,8 @@ class IndexRetrieval(object):
             parameter: str,
             level_type: str = None,
             level: int = None,
-            data_class: str = "od",):
+            data_class: str = "od",
+    ) -> typing.Dict:
 
         if not (system == "grapes_gfs_gmf" and stream == "oper" and data_type == "grib2" and data_name == "orig"):
             raise ValueError("query params is not supported")
@@ -131,7 +132,10 @@ class IndexRetrieval(object):
         }
         return query_body
 
-    def _get_grib_index(self, record) -> GribMessageIndex or None:
+    def _get_grib_index(
+            self,
+            record: typing.Dict
+    ) -> typing.Optional[GribMessageIndex]:
         """
 
         {

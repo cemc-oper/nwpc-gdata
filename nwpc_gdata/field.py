@@ -12,14 +12,14 @@ def load_field_bytes(
         stream: str,
         data_type: str,
         data_name: str,
-        start_time: datetime.datetime or pd.Timestamp,
+        start_time: typing.Union[datetime.datetime, pd.Timestamp],
         forecast_time: pd.Timedelta,
         parameter: str,
         level_type: str,
         level: int,
         index_retrieval: IndexRetrieval,
         data_class: str = "od",
-) -> bytes or None:
+) -> typing.Optional[bytes]:
     grib_index = index_retrieval.query(
         system=system,
         stream=stream,

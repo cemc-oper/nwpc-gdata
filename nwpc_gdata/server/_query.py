@@ -1,7 +1,11 @@
+import typing
+
 import pandas as pd
 
 
-def parse_query(query: dict):
+def parse_query(
+        query: typing.Dict
+) -> typing.Dict:
     fixed_query = query.copy()
 
     if "start_time" in fixed_query:
