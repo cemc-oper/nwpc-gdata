@@ -2,25 +2,28 @@ import datetime
 import typing
 
 import pandas as pd
+import xarray as xr
 
+from .message import load_message
 from nwpc_gdata.index import IndexRetrieval
-from nwpc_gdata.core import load_bytes_from_index
+
+from nwpc_data.grib.eccodes._xarray import create_data_array_from_message
 
 
-def load_bytes(
+def load_field(
         system: str,
         stream: str,
         data_type: str,
         data_name: str,
-        start_time: typing.Union[datetime.datetime, pd.Timestamp],
-        forecast_time: pd.Timedelta,
+        start_time: typing.Union[datetime.datetime, pd.Timestamp, str],
+        forecast_time: typing.Union[pd.Timedelta, str],
         parameter: str,
-        level_type: str,
-        level: int,
+        level_type: str = None,
+        level: int = None,
         data_class: str = "od",
         index_retrieval: IndexRetrieval = None,
-) -> typing.Optional[bytes]:
-    grib_index = index_retrieval.query(
+) -> typing.Optional[xr.DataArray]:
+    message = load_message(
         system=system,
         stream=stream,
         data_type=data_type,
@@ -31,9 +34,8 @@ def load_bytes(
         level_type=level_type,
         level=level,
         data_class=data_class,
+        index_retrieval = index_retrieval,
     )
-    if grib_index is None:
-        return None
-    else:
-        raw_bytes = load_bytes_from_index(grib_index)
-        return raw_bytes
+
+    field = create_data_array_from_message(message)
+    return field
