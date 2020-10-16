@@ -3,7 +3,7 @@ import typing
 
 import pandas as pd
 
-from nwpc_gdata.index import IndexRetrieval
+from nwpc_gdata.index import IndexRetrieval, create_index_retrieval
 from nwpc_gdata.core import load_bytes_from_index
 
 
@@ -20,6 +20,9 @@ def load_bytes(
         data_class: str = "od",
         index_retrieval: IndexRetrieval = None,
 ) -> typing.Optional[bytes]:
+    if index_retrieval is None:
+        index_retrieval = create_index_retrieval()
+
     grib_index = index_retrieval.query(
         system=system,
         stream=stream,
