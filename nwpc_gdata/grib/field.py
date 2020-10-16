@@ -5,7 +5,6 @@ import pandas as pd
 import xarray as xr
 
 from .message import load_message
-from nwpc_gdata.index import IndexRetrieval
 
 from nwpc_data.grib.eccodes._xarray import create_data_array_from_message
 
@@ -21,7 +20,7 @@ def load_field(
         level_type: str = None,
         level: int = None,
         data_class: str = "od",
-        index_retrieval: IndexRetrieval = None,
+        **kwargs,
 ) -> typing.Optional[xr.DataArray]:
     message = load_message(
         system=system,
@@ -34,7 +33,7 @@ def load_field(
         level_type=level_type,
         level=level,
         data_class=data_class,
-        index_retrieval = index_retrieval,
+        **kwargs,
     )
 
     field = create_data_array_from_message(message)

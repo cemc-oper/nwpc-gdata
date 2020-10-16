@@ -4,7 +4,6 @@ import typing
 import pandas as pd
 
 from .bytes import load_bytes
-from nwpc_gdata.index import IndexRetrieval
 
 from nwpc_data.grib.eccodes._bytes import create_message_from_bytes
 
@@ -20,7 +19,7 @@ def load_message(
         level_type: str = None,
         level: int = None,
         data_class: str = "od",
-        index_retrieval: IndexRetrieval = None,
+        **kwargs,
 ) -> typing.Optional[int]:
     raw_bytes = load_bytes(
         system=system,
@@ -33,7 +32,7 @@ def load_message(
         level_type=level_type,
         level=level,
         data_class=data_class,
-        index_retrieval = index_retrieval,
+        **kwargs,
     )
 
     grib_message = create_message_from_bytes(raw_bytes)
