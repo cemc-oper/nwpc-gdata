@@ -3,11 +3,11 @@ import typing
 
 import pandas as pd
 
-from .index_retrieval import IndexRetrieval
-from .grib import load_bytes_from_index
+from nwpc_gdata.index import IndexRetrieval
+from nwpc_gdata.core import load_bytes_from_index
 
 
-def load_field_bytes(
+def load_bytes(
         system: str,
         stream: str,
         data_type: str,

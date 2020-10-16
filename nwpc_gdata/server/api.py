@@ -1,7 +1,7 @@
 from flask import Blueprint, request, current_app, jsonify
 
-from nwpc_gdata.field import load_field_bytes
-from nwpc_gdata.index_retrieval import IndexRetrieval
+from nwpc_gdata.grib import load_bytes
+from nwpc_gdata.index import IndexRetrieval
 from nwpc_gdata.transport import RawField, convert_to_json
 
 from ._query import parse_query
@@ -31,7 +31,7 @@ def fetch_field():
     servers = servers.split(",")
     retrieval = IndexRetrieval(servers)
 
-    raw_bytes = load_field_bytes(
+    raw_bytes = load_bytes(
         index_retrieval=retrieval,
         **fixed_query,
     )

@@ -4,7 +4,7 @@ import datetime
 import pandas as pd
 from elasticsearch import Elasticsearch
 
-from .grib import GribMessageIndex
+from nwpc_gdata.core import GribMessageIndex
 
 
 def get_hour(s: pd.Timedelta) -> int:
