@@ -43,8 +43,10 @@ class IndexRetrieval(object):
         )
         print(query_body)
 
+        index = get_index(system)
+
         result = self._get_result(
-            index="eccode_gfs_grb_index",
+            index=index,
             query_body=query_body,
             search_from=0,
             search_size=1,
@@ -88,7 +90,7 @@ class IndexRetrieval(object):
             data_class: str = "od",
     ) -> typing.Dict:
 
-        if not (system == "grapes_gfs_gmf" and stream == "oper" and data_type == "grib2" and data_name == "orig"):
+        if not (stream == "oper" and data_type == "grib2" and data_name == "orig"):
             raise ValueError("query params is not supported")
 
         must_conditions = []
@@ -182,3 +184,13 @@ class IndexRetrieval(object):
         )
 
         return grib_index
+
+
+def get_index(system: str) -> str:
+    index_mapper = {
+        "grapes_gfs": "eccode_gfs_grb_index",
+        "grapes_gfs_gmf": "eccode_gfs_grb_index",
+        "grapes_meso_3km": "eccode_meso_3_grb_index",
+        "grapes_meso_10km": "eccode_meso_10_grb_index",
+    }
+    return index_mapper[system]
